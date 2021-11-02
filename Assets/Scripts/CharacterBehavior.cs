@@ -17,6 +17,6 @@ public class CharacterBehavior : MonoBehaviour
 
     private void Move(Vector2 vector)
     {
-        rb.MovePosition(rb.position + vector);
+        rb.MovePosition(vector);
     }
 }

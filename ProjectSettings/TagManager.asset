@@ -41,6 +41,12 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Ground Tiles
+    uniqueID: 111718367
+    locked: 0
+  - name: Grid
+    uniqueID: 2482936611
+    locked: 0
   - name: Characters
     uniqueID: 62731119
     locked: 0
