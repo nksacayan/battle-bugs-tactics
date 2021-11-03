@@ -6,7 +6,7 @@ using UnityEngine.Tilemaps;
 
 public class MouseBehavior : MonoBehaviour
 {
-    [SerializeField] private CharacterBehavior selectedCharacter;
+    [SerializeField] private UnitBehavior selectedCharacter;
 
     [SerializeField] private Tilemap map;
 
@@ -14,7 +14,7 @@ public class MouseBehavior : MonoBehaviour
     private Vector2 mouseWorldPosition;
     private Vector2 gizmoPosition;
 
-    public CharacterBehavior SelectedCharacter { get => selectedCharacter; set => selectedCharacter = value; }
+    public UnitBehavior SelectedCharacter { get => selectedCharacter; set => selectedCharacter = value; }
 
     // Recieves player input message
     private void OnMouseLeft()
@@ -24,7 +24,7 @@ public class MouseBehavior : MonoBehaviour
             Collider2D overlap = Physics2D.OverlapPoint(mouseWorldPosition);
             if (overlap != null)
             {
-                SelectedCharacter = overlap.GetComponent<CharacterBehavior>();
+                SelectedCharacter = overlap.GetComponent<UnitBehavior>();
             }
         }
         else
