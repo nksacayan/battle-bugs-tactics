@@ -6,20 +6,38 @@ using UnityEngine.Tilemaps;
 
 public class MouseBehavior : MonoBehaviour
 {
-    private CharacterBehavior selectedCharacter;
+    [SerializeField] private CharacterBehavior selectedCharacter;
 
     [SerializeField] private Tilemap map;
 
     private Vector2 mouseScreenPosition;
     private Vector2 mouseWorldPosition;
     private Vector2 gizmoPosition;
-    
-    // Recieves player input message
-    private void OnMouseClick()
-    {
-        Collider2D overlap = Physics2D.OverlapPoint(mouseWorldPosition);
 
-        Debug.Log(overlap.gameObject);
+    public CharacterBehavior SelectedCharacter { get => selectedCharacter; set => selectedCharacter = value; }
+
+    // Recieves player input message
+    private void OnMouseLeft()
+    {
+        if (selectedCharacter == null)
+        {
+            Collider2D overlap = Physics2D.OverlapPoint(mouseWorldPosition);
+            if (overlap != null)
+            {
+                SelectedCharacter = overlap.GetComponent<CharacterBehavior>();
+            }
+        }
+        else
+        {
+            Vector3 cellDestination = map.WorldToCell(mouseWorldPosition);
+            SelectedCharacter.Move(map.GetCellCenterWorld(Vector3Int.RoundToInt(cellDestination)));
+        }
+        
+    }
+
+    private void OnMouseRight()
+    {
+        SelectedCharacter = null;
     }
 
     private void OnMouseMove(InputValue inputValue)
@@ -27,15 +45,17 @@ public class MouseBehavior : MonoBehaviour
         mouseScreenPosition = inputValue.Get<Vector2>();
         mouseWorldPosition = Camera.main.ScreenToWorldPoint(mouseScreenPosition);
 
-        Vector3Int cellPosition = map.WorldToCell(mouseWorldPosition);
+        Vector3 cellPosition = map.WorldToCell(mouseWorldPosition);
+        Vector3 cellCenter = map.GetCellCenterWorld(Vector3Int.RoundToInt(cellPosition));
 
-        gizmoPosition = new Vector2(cellPosition.x, cellPosition.y);
+        gizmoPosition = cellCenter;
     }
 
     private void OnTestButton()
     {
         Debug.Log("Button");
     }
+    // -----------------------------------------------------
 
     private void OnDrawGizmos()
     {
