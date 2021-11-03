@@ -7,31 +7,27 @@ using UnityEngine.Tilemaps;
 public class MouseBehavior : MonoBehaviour
 {
     private CharacterBehavior selectedCharacter;
+
     [SerializeField] private Tilemap map;
-    [SerializeField] private Tilemap gridMap;
-    [SerializeField] private Tile redTile;
-    [SerializeField] private Tile baseTile;
-    [SerializeField] private Tile greenTile;
 
-
-    private Vector2 mousePosition;
+    private Vector2 mouseScreenPosition;
+    private Vector2 mouseWorldPosition;
     private Vector2 gizmoPosition;
     
     // Recieves player input message
     private void OnMouseClick()
     {
-        Vector3Int cellPosition = map.WorldToCell(mousePosition);
+        Collider2D overlap = Physics2D.OverlapPoint(mouseWorldPosition);
 
-        TileBase tile = map.GetTile(cellPosition);
-        Debug.Log(tile);
-
+        Debug.Log(overlap.gameObject);
     }
 
     private void OnMouseMove(InputValue inputValue)
     {
-        mousePosition = Camera.main.ScreenToWorldPoint(inputValue.Get<Vector2>());
+        mouseScreenPosition = inputValue.Get<Vector2>();
+        mouseWorldPosition = Camera.main.ScreenToWorldPoint(mouseScreenPosition);
 
-        Vector3Int cellPosition = map.WorldToCell(mousePosition);
+        Vector3Int cellPosition = map.WorldToCell(mouseWorldPosition);
 
         gizmoPosition = new Vector2(cellPosition.x, cellPosition.y);
     }
