@@ -6,38 +6,28 @@ using UnityEngine.Tilemaps;
 
 public class MouseBehavior : MonoBehaviour
 {
-    [SerializeField] private UnitBehavior selectedCharacter;
 
-    [SerializeField] private Tilemap map;
+    [SerializeField] private Tilemap backgroundMap;
+    [SerializeField] private Tilemap highlightMap;
+
+    [SerializeField] private Tile highlightedTile;
 
     private Vector2 mouseScreenPosition;
     private Vector2 mouseWorldPosition;
+
     private Vector2 gizmoPosition;
 
-    public UnitBehavior SelectedCharacter { get => selectedCharacter; set => selectedCharacter = value; }
 
+    #region MessageHandlers
     // Recieves player input message
     private void OnMouseLeft()
     {
-        if (selectedCharacter == null)
-        {
-            Collider2D overlap = Physics2D.OverlapPoint(mouseWorldPosition);
-            if (overlap != null)
-            {
-                SelectedCharacter = overlap.GetComponent<UnitBehavior>();
-            }
-        }
-        else
-        {
-            Vector3 cellDestination = map.WorldToCell(mouseWorldPosition);
-            SelectedCharacter.Move(map.GetCellCenterWorld(Vector3Int.RoundToInt(cellDestination)));
-        }
         
     }
 
     private void OnMouseRight()
     {
-        SelectedCharacter = null;
+
     }
 
     private void OnMouseMove(InputValue inputValue)
@@ -45,8 +35,8 @@ public class MouseBehavior : MonoBehaviour
         mouseScreenPosition = inputValue.Get<Vector2>();
         mouseWorldPosition = Camera.main.ScreenToWorldPoint(mouseScreenPosition);
 
-        Vector3 cellPosition = map.WorldToCell(mouseWorldPosition);
-        Vector3 cellCenter = map.GetCellCenterWorld(Vector3Int.RoundToInt(cellPosition));
+        Vector3 cellPosition = backgroundMap.WorldToCell(mouseWorldPosition);
+        Vector3 cellCenter = backgroundMap.GetCellCenterWorld(Vector3Int.RoundToInt(cellPosition));
 
         gizmoPosition = cellCenter;
     }
@@ -56,9 +46,13 @@ public class MouseBehavior : MonoBehaviour
         Debug.Log("Button");
     }
     // -----------------------------------------------------
+    #endregion
 
+    #region DebugStuff
     private void OnDrawGizmos()
     {
         Gizmos.DrawCube(gizmoPosition, new Vector3(.5f, .5f, 0));
     }
+
+    #endregion
 }

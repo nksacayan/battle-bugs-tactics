@@ -44,7 +44,7 @@ TagManager:
   - name: Ground Tiles
     uniqueID: 111718367
     locked: 0
-  - name: Transparent Tiles
+  - name: Highlight Tiles
     uniqueID: 2885795877
     locked: 0
   - name: Grid

@@ -56,6 +56,7 @@ SpriteAtlas:
   m_PackedSprites:
   - {fileID: 21300000, guid: 7613bac4ccd802f499e7026a481a80b5, type: 3}
   - {fileID: 21300000, guid: bacd27c663d479d44b5c23a820ea03b6, type: 3}
+  - {fileID: 21300000, guid: 7e2cd4e9bfee48b41911bcb171b8b603, type: 3}
   - {fileID: -4954369765903962290, guid: 1b53552e592b36849a0bca2b3373b49f, type: 3}
   - {fileID: -6023555733352806269, guid: 1b53552e592b36849a0bca2b3373b49f, type: 3}
   - {fileID: -8894122241839933156, guid: 1b53552e592b36849a0bca2b3373b49f, type: 3}
@@ -180,6 +181,7 @@ SpriteAtlas:
   m_PackedSpriteNamesToIndex:
   - OutlineGreen64
   - OutlineRed64
+  - TransparentBlueSquare
   - tiles_81
   - tiles_80
   - tiles_83

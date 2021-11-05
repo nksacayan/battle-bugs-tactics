@@ -9,13 +9,15 @@ public class UnitBehavior : MonoBehaviour
     private Collider2D playerCollider;
     private UnitStats stats;
 
+    public UnitStats Stats { get => stats; private set => stats = value; }
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
-        stats = new UnitStats(100, 100, 3);
+        Stats = new UnitStats(100, 100, 3);
     }
 
-    public void Move(Vector2 vector)
+    public void MoveTo(Vector2 vector)
     {
         rb.MovePosition(vector);
     }
