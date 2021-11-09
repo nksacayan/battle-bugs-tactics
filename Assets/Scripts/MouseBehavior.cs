@@ -25,13 +25,13 @@ public class MouseBehavior : MonoBehaviour
         {
             if (playerBehavior.PlayerUnitManager.SelectUnitAtWorldPosition(mouseWorldPosition))
             {
-                playerBehavior.PlayerTilemapHighlighter.HighlightMovement(mouseWorldPosition);
+                playerBehavior.PlayerTilemapHighlighter.HighlightMovement(mouseWorldPosition, 2);
             }
         }
         else
         {
             playerBehavior.PlayerUnitManager.MoveSelectedUnitWithSnap(mouseWorldPosition);
-            playerBehavior.PlayerTilemapHighlighter.RefreshMovementHighlight(mouseWorldPosition);
+            playerBehavior.PlayerTilemapHighlighter.RefreshMovementHighlight(mouseWorldPosition, 2);
         }
     }
 
