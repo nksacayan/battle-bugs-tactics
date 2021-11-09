@@ -4,41 +4,50 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Tilemaps;
 
+[RequireComponent(typeof(PlayerBehavior))]
 public class MouseBehavior : MonoBehaviour
-{
-
-    [SerializeField] private Tilemap backgroundMap;
-    [SerializeField] private Tilemap highlightMap;
-
-    [SerializeField] private Tile highlightedTile;
+{ 
+    private PlayerBehavior playerBehavior;
 
     private Vector2 mouseScreenPosition;
     private Vector2 mouseWorldPosition;
 
-    private Vector2 gizmoPosition;
+    private void Awake()
+    {
+        playerBehavior = GetComponent<PlayerBehavior>();
+    }
 
-
-    #region MessageHandlers
+    #region PlayerInputMessageHandlers
     // Recieves player input message
     private void OnMouseLeft()
     {
-        
+        if (playerBehavior.PlayerUnitManager.SelectedUnit == null)
+        {
+            if (playerBehavior.PlayerUnitManager.SelectUnitAtWorldPosition(mouseWorldPosition))
+            {
+                playerBehavior.PlayerTilemapHighlighter.HighlightMovement(mouseWorldPosition);
+            }
+        }
+        else
+        {
+            playerBehavior.PlayerUnitManager.MoveSelectedUnitWithSnap(mouseWorldPosition);
+            playerBehavior.PlayerTilemapHighlighter.RefreshMovementHighlight(mouseWorldPosition);
+        }
     }
 
     private void OnMouseRight()
     {
-
+        if (playerBehavior.PlayerUnitManager.SelectedUnit)
+        {
+            playerBehavior.PlayerUnitManager.ClearSelectedUnit();
+            playerBehavior.PlayerTilemapHighlighter.ClearMovementHighlight();
+        }
     }
 
     private void OnMouseMove(InputValue inputValue)
     {
         mouseScreenPosition = inputValue.Get<Vector2>();
         mouseWorldPosition = Camera.main.ScreenToWorldPoint(mouseScreenPosition);
-
-        Vector3 cellPosition = backgroundMap.WorldToCell(mouseWorldPosition);
-        Vector3 cellCenter = backgroundMap.GetCellCenterWorld(Vector3Int.RoundToInt(cellPosition));
-
-        gizmoPosition = cellCenter;
     }
 
     private void OnTestButton()
@@ -46,13 +55,5 @@ public class MouseBehavior : MonoBehaviour
         Debug.Log("Button");
     }
     // -----------------------------------------------------
-    #endregion
-
-    #region DebugStuff
-    private void OnDrawGizmos()
-    {
-        Gizmos.DrawCube(gizmoPosition, new Vector3(.5f, .5f, 0));
-    }
-
     #endregion
 }

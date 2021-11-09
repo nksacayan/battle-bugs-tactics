@@ -1,15 +1,22 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Tilemaps;
 
-public static class UnitManager
+public class UnitManager
 {
-    private static UnitBehavior selectedUnit;
-    public static UnitBehavior SelectedUnit { get => selectedUnit; private set => selectedUnit = value; }
+    private UnitBehavior selectedUnit;
+    private Grid unitGrid;
+
+    public UnitBehavior SelectedUnit { get => selectedUnit; private set => selectedUnit = value; }
+    public Grid UnitGrid { get => unitGrid; private set => unitGrid = value; }
+
+    public UnitManager(Grid unitGrid)
+    {
+        this.unitGrid = unitGrid;
+    }
 
     // Returns true if selected a unit, else false
-    public static bool SelectUnitAtWorldPosition(Vector2 worldPosition)
+    public bool SelectUnitAtWorldPosition(Vector2 worldPosition)
     {
         Collider2D overlap = Physics2D.OverlapPoint(worldPosition);
         if (overlap != null)
@@ -21,21 +28,15 @@ public static class UnitManager
         return false;
     }
 
-    public static void MoveSelectedUnitWithSnap(Vector2 worldPosition, Tilemap tilemap)
+    public void ClearSelectedUnit()
     {
-        Vector3 cellDestination = tilemap.WorldToCell(worldPosition);
-        selectedUnit.MoveTo(tilemap.GetCellCenterWorld(Vector3Int.RoundToInt(cellDestination)));
+        selectedUnit = null;
     }
 
-    //private void HighlightMovement()
-    //{
-    //    // int movesRemaining = selectedUnit.Stats.Movement;
+    public void MoveSelectedUnitWithSnap(Vector2 worldPosition)
+    {
+        Vector3 cellDestination = unitGrid.WorldToCell(worldPosition);
+        selectedUnit.MoveTo(unitGrid.GetCellCenterWorld(Vector3Int.RoundToInt(cellDestination)));
+    }
 
-    //    TilemapUtilities.SetTileAtWorldPosition(selectedUnit.transform.position, highlightMap, highlightedTile);
-    //}
-
-    //private void ClearMovementHighlight()
-    //{
-    //    highlightMap.ClearAllTiles();
-    //}
 }
